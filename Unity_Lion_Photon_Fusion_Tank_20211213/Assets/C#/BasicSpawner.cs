@@ -136,8 +136,14 @@ namespace Ryan
 
             inputData.inputFire = Input.GetKey(KeyCode.Mouse0);                         //左鍵 發射
             #endregion
+            #region 滑鼠座標處理
+            inputData.positionMouse = Input.mousePosition;                                      // 取得滑鼠座標
+            inputData.positionMouse.z = 63;                                                     //設定 滑鼠座標 Z 軸 - 可以打到3D物件，大於攝影機的Y
 
-            input.Set(inputData);                                                       // 輸入資訊.設定(連線輸入資料)
+            Vector3 mouseToWorld = Camera.main.ScreenToWorldPoint(inputData.positionMouse);     //透過API將滑鼠轉為世界座標
+            inputData.positionMouse = mouseToWorld;                                             //儲存轉換後的滑鼠座標
+            #endregion
+            input.Set(inputData);                                                                // 輸入資訊.設定(連線輸入資料)
         }
 
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)

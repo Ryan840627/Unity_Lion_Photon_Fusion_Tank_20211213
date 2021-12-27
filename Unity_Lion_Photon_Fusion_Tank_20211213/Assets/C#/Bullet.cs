@@ -28,5 +28,21 @@ public class Bullet : NetworkBehaviour
         //存活計時器 = 計時器.從秒數建立(連線執行器，存活時間)
         life = TickTimer.CreateFromSeconds(Runner, lifeTime);
     }
+
+    /// <summary>
+    /// Network Behaviour 父類別提供事件
+    /// 連線用固定FPS
+    /// </summary>
+    public override void FixedUpdateNetwork()
+    {
+        //Runner 連線執行器
+        //Expired()是否到期
+        //Despawn()刪除
+        //Object 連線物件
+        //Runner.Deltatime 連線內一偵的事實
+        //如果 計時器 到期(為零) 就刪除 此連線物件
+        if (life.Expired(Runner)) Runner.Despawn(Object);
+        else transform.Translate(0, 0, speed * Runner.DeltaTime);
+    }
     #endregion
 }
